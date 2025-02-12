@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Hadir</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container input,
+        .form-container select {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Halaman Daftar Hadir -->
+    <div class="container">
+        <h1>Daftar Hadir Peserta</h1>
+        
+        <!-- Form untuk Menambahkan Data -->
+        <div class="form-container">
+            <input type="text" id="namaInput" placeholder="Masukkan Nama" required>
+            <input type="text" id="jabatanInput" placeholder="Masukkan Jabatan" required>
+            <select id="statusInput">
+                <option value="✔">Hadir</option>
+                <option value="❌">Tidak Hadir</option>
+            </select>
+            <button onclick="tambahHadir()">Tambah Hadir</button>
+        </div>
+
+        <!-- Pencarian Nama -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari nama..." onkeyup="searchName()">
+        </div>
+
+        <!-- Tabel Daftar Hadir -->
+        <table id="attendanceTable">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Jabatan</th>
+                    <th>Hadir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data akan ditambahkan di sini -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fungsi untuk menambahkan data ke tabel
+        function tambahHadir() {
+            var nama = document.getElementById("namaInput").value;
+            var jabatan = document.getElementById("jabatanInput").value;
+            var status = document.getElementById("statusInput").value;
+
+            if (nama === "" || jabatan === "") {
+                alert("Nama dan Jabatan harus diisi!");
+                return;
+            }
+
+            // Menambahkan baris baru di tabel
+            var table = document.getElementById("attendanceTable").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+
+            // Mengisi data ke dalam sel tabel
+            cell1.innerHTML = table.rows.length; // No.
+            cell2.innerHTML = nama;
+            cell3.innerHTML = jabatan;
+            cell4.innerHTML = status;
+
+            // Reset input form
+            document.getElementById("namaInput").value = "";
+            document.getElementById("jabatanInput").value = "";
+            document.getElementById("statusInput").value = "✔";
+        }
+
+        // Fungsi pencarian nama
+        function searchName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("attendanceTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1]; // kolom nama
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
